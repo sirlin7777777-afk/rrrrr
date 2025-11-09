@@ -70,9 +70,13 @@ sb.MouseButton1Click:Connect(function()
     if ki.Text == "" then nt(g, "Enter a key!", true) return end
     sb.Text = "⏳" sb.BackgroundColor3 = Color3.fromRGB(241,196,15) task.wait(0.5)
     if keys[n(ki.Text)] then
-        nt(g, "Key verified! ✨", false) sb.Text = "✅" sb.BackgroundColor3 = Color3.fromRGB(46,204,113)
+        sb.Text = "✅" sb.BackgroundColor3 = Color3.fromRGB(46,204,113)
+        nt(g, "Key verified! ✨", false)
+        task.wait(0.5)
+        tw(b, {Size=UDim2.new(0,0,0,0)}, 0.4)
+        task.wait(0.5)
+        g:Destroy()
         _G.KeyVerified = true
-        task.wait(1) tw(b, {Size=UDim2.new(0,0,0,0)}, 0.3) task.wait(0.3) g:Destroy()
     else
         nt(g, "Invalid key!", true) sb.Text = "✓ Verify" sb.BackgroundColor3 = Color3.fromRGB(231,76,60)
         task.wait(1) sb.BackgroundColor3 = Color3.fromRGB(46,204,113)
@@ -93,4 +97,4 @@ game:GetService("UserInputService").InputChanged:Connect(function(i)
     end
 end)
 
-b.Size = UDim2.new(0,0,0,0) tw(b, {Size=UDim2.new(0,400,0,400)}, 0.5)
+b.Size = UDim2.new(0,0,0,0) tw(b, {Size=UDim2.new(0,400,0,350)}, 0.5)
