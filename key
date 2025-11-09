@@ -1,6 +1,6 @@
 -- Compact Key System by sirlin7777777
 local T = game:GetService("TweenService")
-local P = game:GetService("Players").LocalPlayer.PlayerGui
+local P = (gethui and gethui()) or (syn and syn.protect_gui and game:GetService("CoreGui")) or game:GetService("Players").LocalPlayer.PlayerGui
 local K, D = "https://raw.githubusercontent.com/sirlin7777777-afk/keys/main/keys.txt", "https://discord.gg/abnaPcqh7s"
 local keys = {}
 
@@ -17,9 +17,16 @@ end
 
 local ok = pcall(function() for k in game:HttpGet(K):gmatch("[^\r\n]+") do keys[n(k)] = true end end)
 
-local g = Instance.new("ScreenGui", P) g.ResetOnSpawn = false
+local g = Instance.new("ScreenGui", P) 
+g.ResetOnSpawn = false
+g.DisplayOrder = 999999999
+g.IgnoreGuiInset = true
+g.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if gethui then g.Parent = gethui() end
+
 local b = Instance.new("Frame", g) b.Size = UDim2.new(0,400,0,350) b.Position = UDim2.new(0.5,-200,0.5,-175)
 b.BackgroundColor3 = Color3.fromRGB(30,30,40) b.BorderSizePixel = 0 Instance.new("UICorner", b).CornerRadius = UDim.new(0,12)
+b.ZIndex = 10
 
 local h = Instance.new("Frame", b) h.Size = UDim2.new(1,0,0,60) h.BackgroundColor3 = Color3.fromRGB(138,43,226) h.BorderSizePixel = 0
 local t = Instance.new("TextLabel", h) t.Size = UDim2.new(1,-100,1,0) t.Position = UDim2.new(0,10,0,0)
