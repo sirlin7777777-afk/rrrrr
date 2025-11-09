@@ -3,6 +3,7 @@ local T = game:GetService("TweenService")
 local P = (gethui and gethui()) or (syn and syn.protect_gui and game:GetService("CoreGui")) or game:GetService("Players").LocalPlayer.PlayerGui
 local K, D = "https://raw.githubusercontent.com/sirlin7777777-afk/keys/main/keys.txt", "https://discord.gg/abnaPcqh7s"
 local keys = {}
+local keysLoaded = false
 
 local function n(s) return s:lower():gsub("%s", "") end
 local function tw(o, p, t) T:Create(o, TweenInfo.new(t or 0.3), p):Play() end
@@ -12,17 +13,14 @@ local function nt(g, m, e)
     Instance.new("UICorner", f).CornerRadius = UDim.new(0,8)
     local l = Instance.new("TextLabel", f) l.Size = UDim2.new(1,0,1,0) l.BackgroundTransparency = 1
     l.Text = m l.TextColor3 = Color3.new(1,1,1) l.Font = Enum.Font.GothamBold l.TextSize = 14
-    task.delay(2, function() f:Destroy() end)
+    task.delay(2, function() pcall(function() f:Destroy() end) end)
 end
-
-local ok = pcall(function() for k in game:HttpGet(K):gmatch("[^\r\n]+") do keys[n(k)] = true end end)
 
 local g = Instance.new("ScreenGui", P) 
 g.ResetOnSpawn = false
 g.DisplayOrder = 999999999
 g.IgnoreGuiInset = true
 g.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-if gethui then g.Parent = gethui() end
 
 local b = Instance.new("Frame", g) b.Size = UDim2.new(0,400,0,350) b.Position = UDim2.new(0.5,-200,0.5,-175)
 b.BackgroundColor3 = Color3.fromRGB(30,30,40) b.BorderSizePixel = 0 Instance.new("UICorner", b).CornerRadius = UDim.new(0,12)
@@ -33,11 +31,16 @@ local t = Instance.new("TextLabel", h) t.Size = UDim2.new(1,-100,1,0) t.Position
 t.BackgroundTransparency = 1 t.Text = "🔐 Key System" t.TextColor3 = Color3.new(1,1,1)
 t.Font = Enum.Font.GothamBold t.TextSize = 20 t.TextXAlignment = Enum.TextXAlignment.Left
 
+local ls = Instance.new("TextLabel", h) ls.Size = UDim2.new(0,80,0,30) ls.Position = UDim2.new(1,-130,0,15)
+ls.BackgroundColor3 = Color3.fromRGB(241,196,15) ls.Text = "⏳ Loading..." ls.TextColor3 = Color3.new(1,1,1)
+ls.Font = Enum.Font.GothamBold ls.TextSize = 11 ls.BorderSizePixel = 0
+Instance.new("UICorner", ls).CornerRadius = UDim.new(0,6)
+
 local c = Instance.new("TextButton", h) c.Size = UDim2.new(0,40,0,40) c.Position = UDim2.new(1,-50,0,10)
 c.BackgroundColor3 = Color3.fromRGB(231,76,60) c.Text = "✕" c.TextColor3 = Color3.new(1,1,1)
 c.Font = Enum.Font.GothamBold c.TextSize = 18 c.BorderSizePixel = 0
 Instance.new("UICorner", c).CornerRadius = UDim.new(0,8)
-c.MouseButton1Click:Connect(function() tw(b, {Size=UDim2.new(0,0,0,0)}, 0.3) task.wait(0.3) g:Destroy() end)
+c.MouseButton1Click:Connect(function() if keysLoaded then tw(b, {Size=UDim2.new(0,0,0,0)}, 0.3) task.wait(0.3) g:Destroy() end end)
 
 local df = Instance.new("Frame", b) df.Size = UDim2.new(1,-40,0,90) df.Position = UDim2.new(0,20,0,80)
 df.BackgroundColor3 = Color3.fromRGB(88,101,242) df.BorderSizePixel = 0
@@ -73,7 +76,23 @@ sb.BackgroundColor3 = Color3.fromRGB(46,204,113) sb.Text = "✓ Verify" sb.TextC
 sb.Font = Enum.Font.GothamBold sb.TextSize = 16 sb.BorderSizePixel = 0
 Instance.new("UICorner", sb).CornerRadius = UDim.new(0,8)
 
+task.spawn(function()
+    local ok, err = pcall(function() 
+        for k in game:HttpGet(K):gmatch("[^\r\n]+") do 
+            keys[n(k)] = true 
+        end 
+    end)
+    keysLoaded = true
+    if ok then
+        ls.Text = "✅ Ready" ls.BackgroundColor3 = Color3.fromRGB(46,204,113)
+    else
+        ls.Text = "⚠️ Offline" ls.BackgroundColor3 = Color3.fromRGB(231,76,60)
+    end
+    task.wait(1.5) ls:Destroy()
+end)
+
 sb.MouseButton1Click:Connect(function()
+    if not keysLoaded then nt(g, "Wait for keys to load!", true) return end
     if ki.Text == "" then nt(g, "Enter a key!", true) return end
     sb.Text = "⏳" sb.BackgroundColor3 = Color3.fromRGB(241,196,15) task.wait(0.5)
     if keys[n(ki.Text)] then
