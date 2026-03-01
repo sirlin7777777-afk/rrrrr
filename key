@@ -1,7 +1,7 @@
 -- Compact Key System by sirlin7777777
 local T = game:GetService("TweenService")
 local P = (gethui and gethui()) or (syn and syn.protect_gui and game:GetService("CoreGui")) or game:GetService("Players").LocalPlayer.PlayerGui
-local K, D = "https://raw.githubusercontent.com/sirlin7777777-afk/keys/main/keys.txt", "https://discord.gg/abnaPcqh7s"
+local K, D = "https://raw.githubusercontent.com/sirlin7777777-afk/keys/main/keys.txt", "https://discord.gg/3xvzxRv6gr"
 local keys = {}
 local keysLoaded = false
 
